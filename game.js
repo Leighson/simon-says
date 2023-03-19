@@ -52,6 +52,7 @@ function preNextLevelEvent() {
     // reset user pattern storage and increase level
     userPattern = [];
     currentLevel++;
+    console.log("Level " + currentLevel);
 
     // change title to reflect current level
     if (currentLevel >= 2) {
@@ -69,7 +70,6 @@ function preNextLevelEvent() {
 function postNextLevelEvent() {
 
     allowAKey = false;
-    console.log(gamePattern);
 
     if (currentLevel >= 2) {
         $("body").toggleClass("next-level"); // toggle green background off
@@ -116,6 +116,8 @@ function postNextLevelEvent() {
 
         nextLevel = false; // turns ON click events and 'a' press key
 
+        console.log("Game Pattern: " + gamePattern);
+
     }, 4100);
 
 }
@@ -127,15 +129,13 @@ function postNextLevelEvent() {
 // reset page on "a" press || reload page on "r" press
 function handleKeyPress(event) {
 
-    console.log(event.key);
-    console.log(currentLevel);
-
     // if the game is on the landing page and if the key pressed is "a", then start the game...
     // otherwise, check if the key pressed is "r" and reload to landing page
     switch(event.key.toLowerCase()) {
 
         case 'a':
             if (allowAKey === true) {
+                console.log("Pressed A key...");
                 if (currentLevel === 0) {
                     preNextLevelEvent();
                     break;
@@ -169,22 +169,20 @@ function handleButtonClick(event) {
 
     if (currentLevel > 0 && nextLevel === false && gameOver == false) { // only registers clicks after next level event finishes
 
-        console.log(userPattern);
-        console.log(event.target.id);
-
         // trigger pressed animation
         buttonAnimation(event);
 
         // save user choice into userPattern storage
         var userChosenColour = event.target.id;
         userPattern.push(userChosenColour);
+        console.log("User Pattern: " + userPattern);
 
         // check if the user pattern is still incomplete AND if user input is the same as the game pattern
         // if so, go to the next level, otherwise, it's game over and the game resets
         if (userChosenColour === gamePattern[userPattern.length - 1]) {
 
             if (userPattern.length < gamePattern.length) {
-                console.log("Choose the next colour in the pattern.")
+                console.log("Choose the next colour in the pattern...")
             } else {
                 preNextLevelEvent();
             }
