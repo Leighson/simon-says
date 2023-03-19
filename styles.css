@@ -35,7 +35,7 @@ body {
 }
 
 .game-over {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(65, 0, 0);
   opacity: 0.8;
 }
 
@@ -57,7 +57,7 @@ body {
 }
 
 .yellow {
-  background-color: yellow;
+  background-color: rgb(255, 255, 0);
 }
 
 .pressed {

@@ -6,6 +6,7 @@ var currentLevel = 0;
 // instantiate default states for game over and next level pages
 var gameOver = false;
 var nextLevel = false;
+var allowAKey = true;
 
 
 /* HELPER FUNCTIONS ****************************************************/
@@ -28,18 +29,13 @@ function buttonAnimation(event) {
 // create event object for game over event
 function gameOverEvent() {
 
-    // activate background color for game-over state
-    $("#level-title").text("Game Over");
-    $("#level-subtitle").css("visibility", "visible");
-    $("#level-subtitle").text("Press any key to continue");
-    $("#reset-page").css("visibility", "hidden");
-    $("body").toggleClass("game-over");
-
-    // reset game state
-    gamePattern = [];
-    userPattern = [];
-    currentLevel = 0;
     gameOver = true;
+    allowAKey = false;
+
+    // activate text & background color for game-over state
+    $("#level-title").text("Game Over");
+    $("#reset-game").css("visibility", "visible");
+    $("body").toggleClass("game-over");
 
 }
 
@@ -50,19 +46,21 @@ function gameOverEvent() {
 // function to wait for next level after the first level
 function preNextLevelEvent() {
 
+    nextLevel = true;
+    allowAKey = true;
+
     // reset user pattern storage and increase level
     userPattern = [];
     currentLevel++;
-    nextLevel = true;
-    gameOver = false;
 
     // change title to reflect current level
-    if (currentLevel > 1) {
-        $("body").toggleClass("next-level");
+    if (currentLevel >= 2) {
+        $("body").toggleClass("next-level"); // toggle green background on
         $("#level-subtitle").css("visibility", "visible");
-        $("#level-subtitle").html("Press any key to continue");
+        $("#level-subtitle").html("Press A key to continue");
+        $("#reset-game").css("visibility", "hidden");
     } else {
-        postNextLevelEvent();
+        postNextLevelEvent(); // skip to post next level event
     }
 
 }
@@ -70,17 +68,17 @@ function preNextLevelEvent() {
 // function for next level conditions
 function postNextLevelEvent() {
 
-    console.log("Game Pattern: " + gamePattern);
-    console.log("NextColour: " + gamePattern[currentLevel-1]);
+    allowAKey = false;
+    console.log(gamePattern);
 
-    if (currentLevel > 1) {
-        $("body").toggleClass("next-level");
+    if (currentLevel >= 2) {
+        $("body").toggleClass("next-level"); // toggle green background off
     }
+
     $("#level-title").text(`Level ${currentLevel}`);
-    $("#level-subtitle").css("visibility", "visible");
-    $("#reset-page").css("visibility", "visible");
 
     // countdown timer
+    $("#level-subtitle").css("visibility", "visible");
     $("#level-subtitle").text(3);
 
     setTimeout( () => {
@@ -114,10 +112,11 @@ function postNextLevelEvent() {
         $(`#${randomChosenColour}`).animate({opacity: 0.10}, 75);
         $(`#${randomChosenColour}`).animate({opacity: 1.00}, 75);
 
-        console.log("Level " +  currentLevel);
+        $("#reset-game").css("visibility", "visible");
 
-        nextLevel = false;
-    }, 5000);
+        nextLevel = false; // turns ON click events and 'a' press key
+
+    }, 4100);
 
 }
 
@@ -128,17 +127,33 @@ function postNextLevelEvent() {
 // reset page on "a" press || reload page on "r" press
 function handleKeyPress(event) {
 
+    console.log(event.key);
+    console.log(currentLevel);
+
     // if the game is on the landing page and if the key pressed is "a", then start the game...
     // otherwise, check if the key pressed is "r" and reload to landing page
-    if (event.key.toLowerCase() === "a" && currentLevel === 0) {
-        preNextLevelEvent();
-        console.log("KeyPressed: " + event.key);
-    } else if (event.key.toLowerCase() === "r") {
-        console.log("KeyPressed: " + event.key);
-        window.location.reload();
-    } else if (nextLevel) {
-        postNextLevelEvent();
-        console.log("NextColour: " + gamePattern[currentLevel-1]);
+    switch(event.key.toLowerCase()) {
+
+        case 'a':
+            if (allowAKey === true) {
+                if (currentLevel === 0) {
+                    preNextLevelEvent();
+                    break;
+                } else if (nextLevel === true) {
+                    postNextLevelEvent();
+                    break;
+                }
+            }
+
+        case 'r':
+            if (gameOver === true || nextLevel == false) {
+                window.location.reload();
+                break;
+            }
+
+        default:
+            break;
+
     }
 
 }
@@ -148,7 +163,10 @@ function handleKeyPress(event) {
 // if the pattern is incorrect, proceed with game over screen
 function handleButtonClick(event) {
 
-    if (currentLevel > 0 && nextLevel === false) {
+    if (currentLevel > 0 && nextLevel === false && gameOver == false) { // only registers clicks after next level event finishes
+
+        console.log(userPattern);
+        console.log(event.target.id);
 
         // trigger pressed animation
         buttonAnimation(event);
@@ -156,12 +174,6 @@ function handleButtonClick(event) {
         // save user choice into userPattern storage
         var userChosenColour = event.target.id;
         userPattern.push(userChosenColour);
-
-        // check the user input against the game pattern
-        console.log("Chosen colour: " + userChosenColour);
-        console.log("Click count: " + gamePattern.length);
-        console.log("Is the chosen colour correct? " + (userChosenColour === gamePattern[userPattern.length - 1]));
-        console.log("---");
 
         // check if the user pattern is still incomplete AND if user input is the same as the game pattern
         // if so, go to the next level, otherwise, it's game over and the game resets
@@ -177,35 +189,9 @@ function handleButtonClick(event) {
 
             // trigger game over screen
             gameOverEvent();
-            console.log(gameOver);
 
         }
 
-    } else if (gameOver) {
-
-        console.log("Some nonsense.")
-        $("body").toggleClass(".game-over");
-
-    }
-
-}
-
-function handleGlobalClick(event) {
-
-    // check if the game is in a game over event
-    if (gameOver) {
-        $("body").toggleClass("game-over");
-        $("#level-title").text("Press any key to restart");
-        $("#reset-game").css("visibility", "hidden");
-
-        // change game over state
-        gameOver = false;
-    }
-
-    // check if the game is in a next level event
-    if (nextLevel) {
-        // go to next level
-        preNextLevelEvent();
     }
 
 }
@@ -215,6 +201,7 @@ function handleGlobalClick(event) {
 /* MAIN SCRIPT ********************************************************/
 
 
-// main
+// make sure that nextLevel events are not clickable and not resettable
+
 $(document).keydown(handleKeyPress);
 $(".btn").click(handleButtonClick);
