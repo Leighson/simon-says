@@ -133,6 +133,22 @@ function handleKeyPress(event) {
     // otherwise, check if the key pressed is "r" and reload to landing page
     switch(event.key.toLowerCase()) {
 
+        case 'r':
+            if (gameOver === true || nextLevel == false) {
+                window.location.reload();
+                break;
+            } else {
+                break;
+            }
+
+        case 'q':
+            $("#green").click();
+            break;
+
+        case 'w':
+            $("#red").click();
+            break;
+
         case 'a':
             if (allowAKey === true) {
                 console.log("Pressed A key...");
@@ -144,16 +160,13 @@ function handleKeyPress(event) {
                     break;
                 }
             } else {
+                $("#yellow").click();
                 break;
             }
 
-        case 'r':
-            if (gameOver === true || nextLevel == false) {
-                window.location.reload();
-                break;
-            } else {
-                break;
-            }
+        case 's':
+            $("#blue").click();
+            break;
 
         default:
             break;
@@ -176,6 +189,10 @@ function handleButtonClick(event) {
         var userChosenColour = event.target.id;
         userPattern.push(userChosenColour);
         console.log("User Pattern: " + userPattern);
+
+        // play audio cue
+        var audio = new Audio(`./sounds/${userChosenColour}.mp3`);
+        audio.play();
 
         // check if the user pattern is still incomplete AND if user input is the same as the game pattern
         // if so, go to the next level, otherwise, it's game over and the game resets
