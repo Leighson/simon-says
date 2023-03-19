@@ -1,12 +1,12 @@
 // instantiate storage for game state and user choices
-var gamePattern = [];
-var userPattern = [];
-var currentLevel = 0;
+let gamePattern = [];
+let userPattern = [];
+let currentLevel = 0;
 
 // instantiate default states for game over and next level pages
-var gameOver = false;
-var nextLevel = false;
-var allowAKey = true;
+let gameOver = false;
+let nextLevel = false;
+let allowAKey = true;
 
 
 /* HELPER FUNCTIONS ****************************************************/
@@ -143,11 +143,15 @@ function handleKeyPress(event) {
                     postNextLevelEvent();
                     break;
                 }
+            } else {
+                break;
             }
 
         case 'r':
             if (gameOver === true || nextLevel == false) {
                 window.location.reload();
+                break;
+            } else {
                 break;
             }
 
@@ -201,7 +205,6 @@ function handleButtonClick(event) {
 /* MAIN SCRIPT ********************************************************/
 
 
-// make sure that nextLevel events are not clickable and not resettable
 
 $(document).keydown(handleKeyPress);
 $(".btn").click(handleButtonClick);
