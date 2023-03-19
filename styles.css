@@ -30,16 +30,19 @@ body {
   display: block;
   width: 50%;
   margin: auto;
-
 }
 
 .btn {
-  margin: 25px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 4rem;
+  margin: 10px;
+  color: rgb(24, 24, 24);
   display: inline-block;
-  height: 200px;
-  width: 200px;
-  border: 10px solid black;
+  padding: 70px;
+  border: 10px solid rgb(25, 25, 25);
   border-radius: 20%;
+  text-decoration: none;
+  z-index: 1;
 }
 
 .game-over {
