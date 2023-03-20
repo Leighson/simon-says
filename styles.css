@@ -72,6 +72,6 @@ body {
 }
 
 .pressed {
-  box-shadow: 0 0 20px white;
-  background-color: rgb(0, 0, 0);
+  box-shadow: 0 0 0 10px white;
+  background-color: #FEF2BF;
 }

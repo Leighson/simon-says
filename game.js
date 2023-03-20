@@ -112,8 +112,8 @@ function postNextLevelEvent() {
         audio.play();
 
         // animate next pattern
-        $(`#${randomChosenColour}`).animate({opacity: 0.10}, 75);
-        $(`#${randomChosenColour}`).animate({opacity: 1.00}, 75);
+        $(`#${randomChosenColour}`).animate({opacity: 0.10}, 100);
+        $(`#${randomChosenColour}`).animate({opacity: 1.00}, 100);
 
         $("#reset-game").css("visibility", "visible");
 
