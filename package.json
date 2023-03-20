@@ -1,0 +1,27 @@
+{
+  "name": "simon-says",
+  "version": "1.0.0",
+  "description": "Simon Says game with backend.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leighson/simon-says-yu.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Lee Santos, Angela Yu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leighson/simon-says-yu/issues"
+  },
+  "homepage": "https://github.com/Leighson/simon-says-yu#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  }
+}

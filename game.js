@@ -9,8 +9,9 @@ let nextLevel = false;
 let allowAKey = true;
 
 
+
 /* HELPER FUNCTIONS ****************************************************/
-// define animations and events
+
 
 
 // create animator object for button presses
@@ -40,7 +41,9 @@ function gameOverEvent() {
 }
 
 
+
 /* NEXT LEVEL FUNCTIONS *************************************************/
+
 
 
 // function to wait for next level after the first level
@@ -123,13 +126,15 @@ function postNextLevelEvent() {
 }
 
 
+
 /* EVENT HANDLING ********************************************************/
 
 
-// reset page on "a" press || reload page on "r" press
+
 function handleKeyPress(event) {
 
     // if the game is on the landing page and if the key pressed is "a", then start the game...
+    // if the game is on the next level page, only the key 'a' can be pressed
     // otherwise, check if the key pressed is "r" and reload to landing page
     switch(event.key.toLowerCase()) {
 
@@ -190,14 +195,15 @@ function handleButtonClick(event) {
         userPattern.push(userChosenColour);
         console.log("User Pattern: " + userPattern);
 
-        // play audio cue
-        var audio = new Audio(`./sounds/${userChosenColour}.mp3`);
-        audio.play();
-
         // check if the user pattern is still incomplete AND if user input is the same as the game pattern
         // if so, go to the next level, otherwise, it's game over and the game resets
         if (userChosenColour === gamePattern[userPattern.length - 1]) {
 
+            // play chosen colour audio cue
+            var audio = new Audio(`./sounds/${userChosenColour}.mp3`);
+            audio.play();
+
+            // proceed with current level or next level if user guessed the last colour in the game pattern
             if (userPattern.length < gamePattern.length) {
                 console.log("Choose the next colour in the pattern...")
             } else {
@@ -205,6 +211,10 @@ function handleButtonClick(event) {
             }
 
         } else {
+
+            // play game over audio cue
+            var audio = new Audio(`./sounds/wrong.mp3`);
+            audio.play();
 
             // trigger game over screen
             gameOverEvent();
